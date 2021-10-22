@@ -7,36 +7,43 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.Nullable
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.jorgegomezdeveloper.waycommerce.R
 import com.jorgegomezdeveloper.waycommerce.databinding.FragmentListCommercesBinding
 import com.jorgegomezdeveloper.waycommerce.model.Commerce
 import com.jorgegomezdeveloper.waycommerce.ui.base.WCBaseViewModelFragment
+import com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.adapter.WCListCommercesAdapter
 import com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.viewmodel.WCListCommercesViewModel
 import com.jorgegomezdeveloper.waycommerce.usercases.GetCommerces
 import kotlinx.android.synthetic.main.fragment_list_commerces.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+/**
+ *   @author Jorge G.A.
+ *   @since 22/10/2021
+ *   @email jorgegomezdeveloper@gmail.com
+ *
+ *   Fragment class for the views of the list of commerces.
+ */
 class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>() {
 
     companion object {
         const val TAG_FRAGMENT = "WCListCommercesFragment"
     }
 
-    // View Binding
+// =================================================================================================
+// Attributes and Injections
+// =================================================================================================
+
     private var binding: FragmentListCommercesBinding? = null
 
-    // DEPENDENCY INJECTS
-
-    // View Models and Fragments
     private val wcListCommercesViewModel: WCListCommercesViewModel by viewModel()
-    // Use Cases
     private val getCommerces: GetCommerces by inject()
-    // Utils
 
-    // Managers
-
-    // Others
+// =================================================================================================
+// Config
+// =================================================================================================
 
     override fun initialize() {
         Log.i("TAG_INITIALIZE", TAG_FRAGMENT)
@@ -50,25 +57,28 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
         return binding?.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        loadData()
+        observeData()
+    }
+
+// =================================================================================================
+// Override methods
+// =================================================================================================
+
     override fun getFragmentLayout(): Int {
         return R.layout.fragment_list_commerces
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun loadData() {
 
-        initializeViews()
-        initializeListeners()
-        observeData()
+        wcListCommercesViewModel.getCommerces(getCommerces, this)
     }
 
-    override fun initializeViews() {
-        //wcListCommercesViewModel.getCommerces(getCommerces, this)}
-    }
-
-    override fun initializeListeners() {
-
-    }
+// =================================================================================================
+// Private methods
+// =================================================================================================
 
     private fun observeData() {
 
@@ -81,8 +91,19 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
                         wcListCommercesViewModel
                             .getCommercesMutableLiveData().value as List<Commerce>
 
+                    initializeAdapterListCommerces(commerces)
                 }
                 wcListCommercesViewModel.setCommercesMutableLiveData(MutableLiveData())
             })
+    }
+
+    private fun initializeAdapterListCommerces(commerces: List<Commerce>) {
+
+        if (commerces.isNotEmpty()) {
+
+            listCommercesRv.layoutManager = LinearLayoutManager(context)
+            listCommercesRv.adapter =
+                WCListCommercesAdapter(commerces)
+        }
     }
 }
