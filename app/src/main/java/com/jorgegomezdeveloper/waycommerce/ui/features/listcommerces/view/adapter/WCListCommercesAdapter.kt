@@ -1,4 +1,4 @@
-package com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.adapter
+package com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.view.adapter
 
 import android.view.LayoutInflater
 import android.view.View

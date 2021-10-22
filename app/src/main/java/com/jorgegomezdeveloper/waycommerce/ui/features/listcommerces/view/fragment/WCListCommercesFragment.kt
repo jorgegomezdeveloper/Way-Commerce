@@ -2,17 +2,13 @@ package com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.view.fragm
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.annotation.Nullable
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jorgegomezdeveloper.waycommerce.R
-import com.jorgegomezdeveloper.waycommerce.databinding.FragmentListCommercesBinding
 import com.jorgegomezdeveloper.waycommerce.model.Commerce
 import com.jorgegomezdeveloper.waycommerce.ui.base.WCBaseViewModelFragment
-import com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.adapter.WCListCommercesAdapter
+import com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.view.adapter.WCListCommercesAdapter
 import com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.viewmodel.WCListCommercesViewModel
 import com.jorgegomezdeveloper.waycommerce.usercases.GetCommerces
 import com.jorgegomezdeveloper.waycommerce.util.common.LoadingUtil
@@ -37,8 +33,6 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
 // Attributes and Injections
 // =================================================================================================
 
-    private var binding: FragmentListCommercesBinding? = null
-
     private val wcListCommercesViewModel: WCListCommercesViewModel by viewModel()
     private val getCommerces: GetCommerces by inject()
 
@@ -48,14 +42,6 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
 
     override fun initialize() {
         Log.i("TAG_INITIALIZE", TAG_FRAGMENT)
-    }
-
-    @Nullable
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
-        binding = FragmentListCommercesBinding.inflate(layoutInflater)
-        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
