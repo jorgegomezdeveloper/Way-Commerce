@@ -8,4 +8,6 @@
 
     <include layout="@layout/frame_container"/>
 
+    <include layout="@layout/animation_loading"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,6 +15,7 @@ import com.jorgegomezdeveloper.waycommerce.ui.base.WCBaseViewModelFragment
 import com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.adapter.WCListCommercesAdapter
 import com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.viewmodel.WCListCommercesViewModel
 import com.jorgegomezdeveloper.waycommerce.usercases.GetCommerces
+import com.jorgegomezdeveloper.waycommerce.util.common.LoadingUtil
 import kotlinx.android.synthetic.main.fragment_list_commerces.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -72,7 +73,7 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
     }
 
     override fun loadData() {
-
+        LoadingUtil.showLoading(activity!!)
         wcListCommercesViewModel.getCommerces(getCommerces, this)
     }
 
@@ -93,7 +94,9 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
 
                     initializeAdapterListCommerces(commerces)
                 }
+
                 wcListCommercesViewModel.setCommercesMutableLiveData(MutableLiveData())
+                LoadingUtil.hideLoading(activity!!)
             })
     }
 
