@@ -3,7 +3,7 @@ package com.jorgegomezdeveloper.waycommerce.usercases
 import androidx.lifecycle.LiveData
 import com.jorgegomezdeveloper.waycommerce.data.network.resource.Resource
 import com.jorgegomezdeveloper.waycommerce.data.repository.WCRepositoryImpl
-import com.jorgegomezdeveloper.waycommerce.model.CommerceModel
+import com.jorgegomezdeveloper.waycommerce.model.Commerce
 
 /**
  *   @author Jorge G.A.
@@ -14,6 +14,6 @@ import com.jorgegomezdeveloper.waycommerce.model.CommerceModel
  */
 class GetCommerces(private val wcRepositoryImpl: WCRepositoryImpl) {
 
-    fun execute(): LiveData<Resource<CommerceModel>> =
+    fun execute(): LiveData<Resource<List<Commerce>>> =
         wcRepositoryImpl.getWCDataSource().getCommerces()
 }

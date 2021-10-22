@@ -2,6 +2,7 @@ package com.jorgegomezdeveloper.waycommerce.ui.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.jorgegomezdeveloper.waycommerce.R
 import com.jorgegomezdeveloper.waycommerce.ui.activities.WCMainActivity
 import org.koin.android.ext.android.inject
 
@@ -38,6 +39,16 @@ abstract class WCBaseActivity: AppCompatActivity() {
 
     open fun loadInitialFragment() {
 
+        val initialFragment: WCBaseFragment? = getInitialFragment()
+
+        if (initialFragment != null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.frameContainer,
+                    initialFragment)
+                .commit()
+        }
     }
 
 // =================================================================================================

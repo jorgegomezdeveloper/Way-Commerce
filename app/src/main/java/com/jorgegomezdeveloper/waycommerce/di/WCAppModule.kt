@@ -4,9 +4,11 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jorgegomezdeveloper.waycommerce.data.network.rest.WCRestDataSource
 import com.jorgegomezdeveloper.waycommerce.data.network.service.WCApiService
+import com.jorgegomezdeveloper.waycommerce.data.repository.WCRepositoryImpl
 import com.jorgegomezdeveloper.waycommerce.data.services.commons.retrofit.RetrofitManager
 import com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.view.fragment.WCListCommercesFragment
 import com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.viewmodel.WCListCommercesViewModel
+import com.jorgegomezdeveloper.waycommerce.usercases.GetCommerces
 import com.jorgegomezdeveloper.waycommerce.util.retrofit.RetrofitUtil
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -65,7 +67,8 @@ val wcRestDataSourcesModule = module {
 // =================================================================================================
 
 val wcUseCasesImplModule = module {
-
+    single { GetCommerces(get()) }
+    single { WCRepositoryImpl() }
 }
 
 // =================================================================================================

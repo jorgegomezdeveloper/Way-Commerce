@@ -1,23 +1,40 @@
 package com.jorgegomezdeveloper.waycommerce.ui.activities
 
+import android.os.Bundle
+import com.jorgegomezdeveloper.waycommerce.R
 import com.jorgegomezdeveloper.waycommerce.ui.base.WCBaseActivity
 import com.jorgegomezdeveloper.waycommerce.ui.base.WCBaseFragment
+import com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.view.fragment.WCListCommercesFragment
+import org.koin.android.ext.android.inject
 
 class WCMainActivity: WCBaseActivity() {
 
+// =================================================================================================
+// Injects
+// =================================================================================================
+
+    private val wcListCommercesFragment: WCListCommercesFragment by inject()
+
+// =================================================================================================
+// Config
+// =================================================================================================
+
     override fun getActivityLayout(): Int {
-        TODO("Not yet implemented")
+        return R.layout.activity_main
     }
 
     override fun getActivityTag(): String? {
-        TODO("Not yet implemented")
+        return WCMainActivity::class.java.simpleName
     }
 
-    override fun getInitialFragment(): WCBaseFragment? {
-        TODO("Not yet implemented")
+    override fun getInitialFragment(): WCBaseFragment {
+        return wcListCommercesFragment
     }
 
     override fun initialize() {
-        TODO("Not yet implemented")
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
     }
 }

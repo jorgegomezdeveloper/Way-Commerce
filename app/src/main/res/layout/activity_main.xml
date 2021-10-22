@@ -6,5 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.WCMainActivity">
 
+    <include layout="@layout/frame_container"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

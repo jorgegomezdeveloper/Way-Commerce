@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
  *
  *   Model of data for commerce.
  */
-data class CommerceModel(
+data class Commerce(
 
     @SerializedName("name")
     val name: String?,
