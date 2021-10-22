@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.jorgegomezdeveloper.waycommerce.data.network.AppException
 import com.jorgegomezdeveloper.waycommerce.data.network.resource.Resource
 import com.jorgegomezdeveloper.waycommerce.data.services.commons.retrofit.RetrofitManager
-import com.jorgegomezdeveloper.waycommerce.model.CommerceModel
+import com.jorgegomezdeveloper.waycommerce.model.Commerce
 import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,15 +32,15 @@ class WCRestDataSource: WCDataSource, Application() {
 // Override methods
 // =================================================================================================
 
-    override fun getCommerces(): LiveData<Resource<CommerceModel>> {
+    override fun getCommerces(): LiveData<Resource<List<Commerce>>> {
 
-        val data = MutableLiveData<Resource<CommerceModel>>()
+        val data = MutableLiveData<Resource<List<Commerce>>>()
 
         retrofitManager
             .getWCApiService()!!
-            .getCommerces().enqueue(object : Callback<CommerceModel> {
-                override fun onResponse(call: Call<CommerceModel>?,
-                                        response: Response<CommerceModel>?) {
+            .getCommerces().enqueue(object : Callback<List<Commerce>> {
+                override fun onResponse(call: Call<List<Commerce>>?,
+                                        response: Response<List<Commerce>>?) {
 
                     if (response != null && response.isSuccessful) {
                         data.value = Resource.success(response.body())
@@ -53,7 +53,7 @@ class WCRestDataSource: WCDataSource, Application() {
                     }
                 }
 
-                override fun onFailure(call: Call<CommerceModel>?, t: Throwable?) {
+                override fun onFailure(call: Call<List<Commerce>>?, t: Throwable?) {
 
                     val exception = AppException(t)
                     data.value = Resource.error(exception)

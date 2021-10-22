@@ -1,6 +1,6 @@
 package com.jorgegomezdeveloper.waycommerce.data.network.service
 
-import com.jorgegomezdeveloper.waycommerce.model.CommerceModel
+import com.jorgegomezdeveloper.waycommerce.model.Commerce
 import retrofit2.Call
 import retrofit2.http.GET
 
@@ -14,5 +14,5 @@ import retrofit2.http.GET
 interface WCApiService {
 
     @GET("/commerces/public")
-    fun getCommerces(): Call<CommerceModel>
+    fun getCommerces(): Call<List<Commerce>>
 }

@@ -9,12 +9,16 @@ import com.google.gson.annotations.SerializedName
  *
  *   Model of data for commerce.
  */
-data class CommerceModel(
+data class Commerce(
 
     @SerializedName("name")
     val name: String?,
     @SerializedName("category")
     val category: String?,
     @SerializedName("shortDescription")
-    val shortDescription: String?
+    val shortDescription: String?,
+    @SerializedName("latitude")
+    val latitude: Double?,
+    @SerializedName("longitude")
+    val longitude: Double?
 )

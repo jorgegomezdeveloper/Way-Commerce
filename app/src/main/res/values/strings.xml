@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Way Commerce</string>
+
+    <!--SCREEN LIST OF COMMERCES -->
+    <string name="title_categories_spinner">Categorías</string>
+    <string name="title_list_commerces">Comercios</string>
+
 </resources>

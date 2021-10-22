@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="category_commerces">
+        <item>-Todas las categorías-</item>
+        <item>BEAUTY</item>
+        <item>FOOD</item>
+        <item>LEISURE</item>
+        <item>SHOPPING</item>
+    </string-array>
+
+</resources>
