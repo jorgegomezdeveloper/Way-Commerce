@@ -16,5 +16,9 @@ data class Commerce(
     @SerializedName("category")
     val category: String?,
     @SerializedName("shortDescription")
-    val shortDescription: String?
+    val shortDescription: String?,
+    @SerializedName("latitude")
+    val latitude: Double?,
+    @SerializedName("longitude")
+    val longitude: Double?
 )

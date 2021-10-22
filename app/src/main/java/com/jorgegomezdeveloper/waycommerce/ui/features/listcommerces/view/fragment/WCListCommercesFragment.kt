@@ -63,13 +63,11 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
     }
 
     override fun initializeViews() {
-
+        //wcListCommercesViewModel.getCommerces(getCommerces, this)}
     }
 
     override fun initializeListeners() {
 
-        introDataUseCaseButton.setOnClickListener {
-            wcListCommercesViewModel.getCommerces(getCommerces, this)}
     }
 
     private fun observeData() {
