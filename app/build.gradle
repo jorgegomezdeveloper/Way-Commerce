@@ -41,14 +41,12 @@ android {
 dependencies {
 
     // KOTLIN
-
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     // Anko
     implementation "org.jetbrains.anko:anko-common:$anko_version"
 
     // LIFE CYCLE
-
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_version"
     // LiveData
@@ -57,7 +55,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
 
     // INJECTION DEPENDENCIES
-
     // Koin
     implementation "org.koin:koin-android:$koin_version"
     implementation "org.koin:koin-androidx-viewmodel:$koin_version"
@@ -75,9 +72,15 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation 'androidx.test:core-ktx:1.4.0'
 
-    // DESIGN-VIEWS
+    // Paging
+    implementation "androidx.paging:paging-runtime-ktx:3.1.0-beta01"
 
+    // DESIGN-VIEWS
     // Android Support-Design
     implementation "com.google.android.material:material:$material_design"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
+
+    //OTHERS
+    // Lottie
+    implementation "com.airbnb.android:lottie:$lottie_version"
 }

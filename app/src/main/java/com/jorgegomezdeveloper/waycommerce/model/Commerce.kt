@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName
  *
  *   Model of data for commerce.
  */
+
 data class Commerce(
 
     @SerializedName("name")
