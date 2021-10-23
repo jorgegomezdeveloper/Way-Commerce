@@ -2,10 +2,16 @@ package com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.view.fragm
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import androidx.annotation.Nullable
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jorgegomezdeveloper.waycommerce.R
+import com.jorgegomezdeveloper.waycommerce.databinding.FragmentListCommercesBinding
+import com.jorgegomezdeveloper.waycommerce.databinding.FragmentListCommercesBindingImpl
 import com.jorgegomezdeveloper.waycommerce.model.Commerce
 import com.jorgegomezdeveloper.waycommerce.ui.base.WCBaseViewModelFragment
 import com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.view.adapter.WCListCommercesAdapter
@@ -44,8 +50,16 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
         Log.i("TAG_INITIALIZE", TAG_FRAGMENT)
     }
 
+    @Nullable
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        return FragmentListCommercesBinding.inflate(layoutInflater).root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initializeListeners()
         loadData()
         observeData()
     }
@@ -56,6 +70,25 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
 
     override fun getFragmentLayout(): Int {
         return R.layout.fragment_list_commerces
+    }
+
+    override fun initializeListeners() {
+
+        optionsFilterListSp.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?,
+                                        position: Int, id: Long) {
+
+                optionsFilterListSp.setSelection(position)
+                //Get category selected.
+                 val categorySelected: String = parent?.getItemAtPosition(position) as String
+                //Get list of commerces filtered by category selected.
+                if (wcListCommercesViewModel.getCommercesMutableLiveData().value != null) {
+                    getFilteredListCommercesByCategorySelected(categorySelected)
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
     }
 
     override fun loadData() {
@@ -81,14 +114,27 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
                     initializeAdapterListCommerces(commerces)
                 }
 
-                wcListCommercesViewModel.setCommercesMutableLiveData(MutableLiveData())
                 LoadingUtil.hideLoading(activity!!)
             })
     }
 
-    private fun initializeAdapterListCommerces(commerces: List<Commerce>) {
+    /**
+     * Get the list of commerces filtered with the category selected.
+     * And updated the adapter.
+     */
+    private fun getFilteredListCommercesByCategorySelected(
+        categorySelected: String) {
 
-        if (commerces.isNotEmpty()) {
+        //Get list of commerced filtered by category selected.
+        val listCommercesByCategory: List<Commerce>? =
+            wcListCommercesViewModel.getListCommercesByCategory(categorySelected)
+        //Update adapter of list commerces
+        initializeAdapterListCommerces(listCommercesByCategory)
+    }
+
+    private fun initializeAdapterListCommerces(commerces: List<Commerce>?) {
+
+        if (commerces!!.isNotEmpty()) {
 
             listCommercesRv.layoutManager = LinearLayoutManager(context)
             listCommercesRv.adapter =

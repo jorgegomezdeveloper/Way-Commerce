@@ -17,6 +17,18 @@ import com.jorgegomezdeveloper.waycommerce.usercases.GetCommerces
 class WCListCommercesViewModel: WCBaseViewModel() {
 
 // =================================================================================================
+// Enum
+// =================================================================================================
+
+    enum class Categories {
+        ALL,
+        BEAUTY,
+        FOOD,
+        LEISURE,
+        SHOPPING
+    }
+
+// =================================================================================================
 // Attributes
 // =================================================================================================
 
@@ -41,7 +53,7 @@ class WCListCommercesViewModel: WCBaseViewModel() {
                         Resource.Status.DATA_NOT_AVAILABLE -> {
                             getCommercesMutableLiveData.value = null
                         }
-                        Resource.Status.ERROR->{
+                        Resource.Status.ERROR -> {
                             getCommercesMutableLiveData.value = null
                         }
                     }
@@ -53,7 +65,39 @@ class WCListCommercesViewModel: WCBaseViewModel() {
         this.getCommercesMutableLiveData = getCommercesMutableLiveData
     }
 
-    fun getCommercesMutableLiveData() : MutableLiveData<List<Commerce>> {
+    fun getCommercesMutableLiveData(): MutableLiveData<List<Commerce>> {
         return getCommercesMutableLiveData
+    }
+
+// =================================================================================================
+// FILTER COLLECTIONS
+// =================================================================================================
+
+    /**
+     * Get the list of commerces filtered by category.
+     */
+    fun getListCommercesByCategory(category: String): List<Commerce>? {
+
+        return when (category) {
+            Categories.ALL.name -> {
+                getCommercesMutableLiveData().value
+            }
+            Categories.BEAUTY.name,
+            Categories.FOOD.name,
+            Categories.LEISURE.name,
+            Categories.SHOPPING.name -> {
+                filterListCommercesByCategory(category)
+            }
+            else -> getCommercesMutableLiveData().value
+        }
+    }
+
+    /**
+     * Filter the list of commerces by category from main collection.
+     */
+    private fun filterListCommercesByCategory(category: String): List<Commerce>? {
+
+        val listCommerces: List<Commerce>? = getCommercesMutableLiveData.value
+        return listCommerces?.filter { it.category == category }
     }
 }
