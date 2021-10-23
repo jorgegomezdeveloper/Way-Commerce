@@ -2,7 +2,7 @@
 <resources>
 
     <string-array name="category_commerces">
-        <item>-Todas las categorías-</item>
+        <item>ALL</item>
         <item>BEAUTY</item>
         <item>FOOD</item>
         <item>LEISURE</item>

@@ -15,7 +15,7 @@ import com.jorgegomezdeveloper.waycommerce.model.Commerce
  *
  *   Adapter class for format the data of the commerces with the views.
  */
-class WCListCommercesAdapter(private val commerces: List<Commerce>):
+class WCListCommercesAdapter(private val commerces: List<Commerce>?):
     RecyclerView.Adapter<WCListCommercesAdapter.ViewHolder>() {
 
 // =================================================================================================
@@ -29,13 +29,13 @@ class WCListCommercesAdapter(private val commerces: List<Commerce>):
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val commerces = commerces[position]
-        holder.nameCommerceTv.text = commerces.name
+        val commerces = commerces?.get(position)
+        holder.nameCommerceTv.text = commerces!!.name
         holder.categoryCommerceTv.text = commerces.category
         holder.shortDescriptionCommerceTv.text = commerces.shortDescription
     }
 
-    override fun getItemCount(): Int = commerces.size
+    override fun getItemCount(): Int = commerces!!.size
 
 // =================================================================================================
 // View Holder
