@@ -9,6 +9,7 @@ import com.jorgegomezdeveloper.waycommerce.data.services.commons.retrofit.Retrof
 import com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.view.fragment.WCListCommercesFragment
 import com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.viewmodel.WCListCommercesViewModel
 import com.jorgegomezdeveloper.waycommerce.usercases.GetCommerces
+import com.jorgegomezdeveloper.waycommerce.util.location.GpsUtil
 import com.jorgegomezdeveloper.waycommerce.util.retrofit.RetrofitUtil
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -27,7 +28,7 @@ import retrofit2.Retrofit
 // =================================================================================================
 
 val wcUtilsModule = module {
-
+    single { GpsUtil() }
 }
 
 // =================================================================================================

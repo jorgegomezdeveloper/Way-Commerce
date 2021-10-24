@@ -5,7 +5,11 @@ import android.view.View
 import kotlinx.android.synthetic.main.animation_loading.*
 
 /**
- * Class for control of loading in the calls to services.
+ *   @author Jorge G.A.
+ *   @since 22/10/2021
+ *   @email jorgegomezdeveloper@gmail.com
+ *
+ *   Util object for control of loading in the calls to services or others.
  */
 object LoadingUtil {
 

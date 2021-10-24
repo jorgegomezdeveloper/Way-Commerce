@@ -80,4 +80,7 @@ dependencies {
     //OTHERS
     // Lottie
     implementation "com.airbnb.android:lottie:$lottie_version"
+
+    // Google Play Services
+    implementation "com.google.android.gms:play-services-location:$play_services"
 }

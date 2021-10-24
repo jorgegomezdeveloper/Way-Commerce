@@ -11,6 +11,7 @@ buildscript {
     ext.retrofit_version = '2.7.1'
     ext.okhttp_version = "4.3.1"
     ext.lottie_version = '3.3.1'
+    ext.play_services = '18.0.0'
 
     repositories {
         google()
