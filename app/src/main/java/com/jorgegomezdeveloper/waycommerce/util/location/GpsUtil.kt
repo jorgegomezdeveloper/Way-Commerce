@@ -9,7 +9,12 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import java.lang.Exception
+
+
+
 
 /**
  *   @author Jorge G.A.
@@ -30,7 +35,7 @@ class GpsUtil: android.location.LocationListener {
         private const val MIN_DISTANCE_CHANGE_FOR_UPDATES: Long = 10
         //The minimum time between updates in milliseconds.
         //1 minute.
-        private const val MIN_TIME_BW_UPDATES: Long = 60000
+        private const val MIN_TIME_BW_UPDATES: Long = 2000
     }
 
 // =================================================================================================
@@ -51,6 +56,8 @@ class GpsUtil: android.location.LocationListener {
 
     private var instance: GpsUtil? = null
 
+    val data = MutableLiveData<Location>()
+
 
 // =================================================================================================
 // Config: START GPS AND GET LOCATION
@@ -60,13 +67,14 @@ class GpsUtil: android.location.LocationListener {
      * Initialize the service of gps.
      * Ang get the current location.
      */
-    open fun startGpsService(context: Context): Location? {
+    open fun startGpsService(context: Context): LiveData<Location>? {
 
         this.context = context
 
         return try {
             //Getting object of location service.
-            locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            locationManager =
+                context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
             //Getting Gps status.
             isGPSEnabled = locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)
             //Getting network status.
@@ -79,10 +87,15 @@ class GpsUtil: android.location.LocationListener {
             }
             //Create and get location.
             location = createLocation()
-            location
+            if (location != null) {
+                data.value = location!!
+            }
+
+            return data
+
         } catch (exception: Exception) {
             exception.printStackTrace();
-            null
+            return data
         }
     }
 
@@ -98,8 +111,7 @@ class GpsUtil: android.location.LocationListener {
                 context!!,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             )
-            != PackageManager.PERMISSION_GRANTED
-        ) {
+            != PackageManager.PERMISSION_GRANTED) {
             requestPermissions()
         }
     }
@@ -121,8 +133,7 @@ class GpsUtil: android.location.LocationListener {
         if (isNetworkEnabled && isGPSEnabled) {
             if (ActivityCompat.checkSelfPermission(
                     context!!,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
+                    Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(
                     context!!,
@@ -173,6 +184,7 @@ class GpsUtil: android.location.LocationListener {
                 }
             }
         }
+
         return location
     }
 
@@ -216,6 +228,7 @@ class GpsUtil: android.location.LocationListener {
         Log.d("GPS", "Latitude: $latitude")
         Log.d("GPS", "Longitude: $longitude")
         this.location = location
+        data.value = location
     }
 
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
