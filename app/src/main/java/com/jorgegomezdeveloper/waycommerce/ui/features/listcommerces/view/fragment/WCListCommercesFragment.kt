@@ -1,8 +1,6 @@
 package com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.view.fragment
 
-import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +14,6 @@ import com.jorgegomezdeveloper.waycommerce.ui.base.WCBaseViewModelFragment
 import com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.view.adapter.WCListCommercesAdapter
 import com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.viewmodel.WCListCommercesViewModel
 import com.jorgegomezdeveloper.waycommerce.usercases.GetCommerces
-import com.jorgegomezdeveloper.waycommerce.usercases.GetLocation
 import com.jorgegomezdeveloper.waycommerce.util.common.LoadingUtil
 import com.jorgegomezdeveloper.waycommerce.util.location.GpsUtil
 import com.jorgegomezdeveloper.waycommerce.util.location.LocationUtil
@@ -46,12 +43,13 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
     private val gpsUtil: GpsUtil by inject()
     private val locationUtil: LocationUtil by inject()
 
+    private var isFromSpinner: Boolean = false
+
 // =================================================================================================
 // Config
 // =================================================================================================
 
     override fun initialize() {
-        Log.i("TAG_INITIALIZE", TAG_FRAGMENT)
         //Initialize Gps.
         wcListCommercesViewModel.getLocation(gpsUtil, locationUtil, this)
     }
@@ -68,7 +66,6 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
         initializeListeners()
         loadData()
         observeDataCommerces()
-        observeDataLocation()
     }
 
 // =================================================================================================
@@ -96,6 +93,8 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
                 //Get list of commerces filtered by category selected.
                 if (wcListCommercesViewModel.getCommercesMutableLiveData().value != null) {
                     getFilteredListCommercesByCategorySelected(categorySelected)
+                    isFromSpinner = true
+                    orderLocationSw.isChecked = false
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -106,15 +105,26 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
     private fun initializeListenerSwitch() {
 
         orderLocationSw.setOnCheckedChangeListener { _, isChecked ->
+
             if (isChecked) {
                 //Execute get location from gps.
                 LoadingUtil.showLoading(activity!!)
-                wcListCommercesViewModel.getLocation(gpsUtil, locationUtil, this)
-                //Update adapter of list commerces
-                initializeAdapterListCommerces(wcListCommercesViewModel.commercesCurrentOrdered)
+                wcListCommercesViewModel.getLocation(
+                    gpsUtil,
+                    locationUtil,
+                    this)
+                //Update adapter of list commerces.
+                initializeAdapterListCommerces(
+                    wcListCommercesViewModel.getCommercesCurrentOrdered())
+
             } else {
-                //Update adapter of list commerces
-                initializeAdapterListCommerces(wcListCommercesViewModel.commercesCurrent)
+                //Update adapter of list commerces.
+                    if (!isFromSpinner) {
+                        initializeAdapterListCommerces(
+                            wcListCommercesViewModel.getCommercesCurrent()
+                        )
+                    }
+                isFromSpinner = false
             }
         }
     }
@@ -142,24 +152,6 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
 
                     initializeAdapterListCommerces(commerces)
                 }
-
-                LoadingUtil.hideLoading(activity!!)
-            })
-    }
-
-    private fun observeDataLocation() {
-
-        wcListCommercesViewModel.getLocationMutableLiveData().observe(
-            viewLifecycleOwner, {
-
-                if (wcListCommercesViewModel.getLocationMutableLiveData().value != null) {
-
-                    val locationUser: Location? =
-                        wcListCommercesViewModel.getLocationMutableLiveData().value
-
-                }
-
-                LoadingUtil.hideLoading(activity!!)
             })
     }
 
@@ -185,5 +177,6 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
             listCommercesRv.adapter =
                 WCListCommercesAdapter(commerces)
         }
+        LoadingUtil.hideLoading(activity!!)
     }
 }
