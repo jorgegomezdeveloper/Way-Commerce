@@ -3,6 +3,7 @@
 
     <!--SCREEN LIST OF COMMERCES -->
     <string name="title_categories_spinner">Categorías</string>
+    <string name="message_oder_switch">Ordernar por cercanía</string>
     <string name="title_list_commerces">Comercios</string>
 
 </resources>

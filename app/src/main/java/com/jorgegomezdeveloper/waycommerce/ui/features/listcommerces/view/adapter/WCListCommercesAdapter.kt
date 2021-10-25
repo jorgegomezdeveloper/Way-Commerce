@@ -33,6 +33,15 @@ class WCListCommercesAdapter(private val commerces: List<Commerce>?):
         holder.nameCommerceTv.text = commerces!!.name
         holder.categoryCommerceTv.text = commerces.category
         holder.shortDescriptionCommerceTv.text = commerces.shortDescription
+
+        if (commerces.distance != null) {
+
+            if (commerces.distance!! >= 1000) {
+                holder.distanceTv.text = commerces.distance.toString().plus("km.")
+            } else {
+                holder.distanceTv.text = commerces.distance.toString().plus("m.")
+            }
+        }
     }
 
     override fun getItemCount(): Int = commerces!!.size
@@ -49,5 +58,7 @@ class WCListCommercesAdapter(private val commerces: List<Commerce>?):
             itemView.findViewById(R.id.categoryCommerceTv)
         var shortDescriptionCommerceTv: TextView =
             itemView.findViewById(R.id.shortDescriptionCommerceTv)
+        var distanceTv: TextView =
+            itemView.findViewById(R.id.distanceTv)
     }
 }
