@@ -110,7 +110,11 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
                 //Execute get location from gps.
                 LoadingUtil.showLoading(activity!!)
                 wcListCommercesViewModel.getLocation(gpsUtil, locationUtil, this)
-
+                //Update adapter of list commerces
+                initializeAdapterListCommerces(wcListCommercesViewModel.commercesCurrentOrdered)
+            } else {
+                //Update adapter of list commerces
+                initializeAdapterListCommerces(wcListCommercesViewModel.commercesCurrent)
             }
         }
     }

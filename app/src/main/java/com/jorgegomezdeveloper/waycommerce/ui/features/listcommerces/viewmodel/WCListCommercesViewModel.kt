@@ -24,7 +24,7 @@ import kotlin.Comparator
  *
  *   View model class for the data of the list commerces.
  */
-class WCListCommercesViewModel: WCBaseViewModel() {
+open class WCListCommercesViewModel: WCBaseViewModel() {
 
 // =================================================================================================
 // Enums
@@ -47,8 +47,9 @@ class WCListCommercesViewModel: WCBaseViewModel() {
     //Location.
     private var getLocationMutableLiveData: MutableLiveData<Location> = MutableLiveData()
 
-    //Others
-    private var commercesCurrent: List<Commerce>? = listOf()
+    //Collections
+    open var commercesCurrent: List<Commerce>? = listOf()
+    open var commercesCurrentOrdered: List<Commerce>? = listOf()
 
 // =================================================================================================
 // Use case: Get commerces
@@ -67,6 +68,7 @@ class WCListCommercesViewModel: WCBaseViewModel() {
 
                         Resource.Status.SUCCESS -> {
                             getCommercesMutableLiveData.value = resource.data as List<Commerce>
+                            commercesCurrent = getCommercesMutableLiveData.value
                         }
                         Resource.Status.DATA_NOT_AVAILABLE -> {
                             getCommercesMutableLiveData.value = null
@@ -180,8 +182,7 @@ class WCListCommercesViewModel: WCBaseViewModel() {
         }
 
         //Order commerces with distance.
-        commercesCurrent = getListCommercesOrderByDistance(commerces)
-        Log.i("ORDER", commercesCurrent.toString())
+        commercesCurrentOrdered = getListCommercesOrderByDistance(commerces)
     }
 
     /**

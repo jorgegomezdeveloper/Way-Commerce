@@ -21,7 +21,7 @@ class LocationUtil {
     fun getDistanceBetweenUserAndOther(
         locationUser: Location,
         latitudeOther: Double,
-        longitudeOther: Double): Float {
+        longitudeOther: Double): Int {
 
         val distanceResult = FloatArray(2)
 
@@ -30,6 +30,12 @@ class LocationUtil {
             latitudeOther, longitudeOther,
             distanceResult)
 
-        return distanceResult[0]
+        return if (distanceResult[0] >= 1000) {
+            val distanceKm = distanceResult[0].div(1000).toInt()
+            distanceKm
+        } else {
+            val distanceMeters = distanceResult[0].toInt()
+            distanceMeters
+        }
     }
 }
