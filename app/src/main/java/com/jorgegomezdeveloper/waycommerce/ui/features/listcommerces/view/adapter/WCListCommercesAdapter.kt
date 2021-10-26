@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.jorgegomezdeveloper.waycommerce.R
+import com.jorgegomezdeveloper.waycommerce.common.constants.Constants.Companion.THOUSAND
+import com.jorgegomezdeveloper.waycommerce.common.constants.texts.WCTextConstants
 import com.jorgegomezdeveloper.waycommerce.model.Commerce
 
 /**
@@ -36,10 +38,12 @@ class WCListCommercesAdapter(private val commerces: List<Commerce>?):
 
         if (commerces.distance != null) {
 
-            if (commerces.distance!! >= 1000) {
-                holder.distanceTv.text = commerces.distance.toString().plus("km.")
+            if (commerces.distance!! >= THOUSAND) {
+                holder.distanceTv.text =
+                    commerces.distance.toString().plus(WCTextConstants.KILOMETRES)
             } else {
-                holder.distanceTv.text = commerces.distance.toString().plus("m.")
+                holder.distanceTv.text =
+                    commerces.distance.toString().plus(WCTextConstants.METERS)
             }
         }
     }

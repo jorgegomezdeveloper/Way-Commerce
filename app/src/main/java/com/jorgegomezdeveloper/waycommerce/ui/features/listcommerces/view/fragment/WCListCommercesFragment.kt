@@ -16,7 +16,6 @@ import com.jorgegomezdeveloper.waycommerce.ui.features.listcommerces.viewmodel.W
 import com.jorgegomezdeveloper.waycommerce.usercases.GetCommerces
 import com.jorgegomezdeveloper.waycommerce.util.common.LoadingUtil
 import com.jorgegomezdeveloper.waycommerce.util.location.GpsUtil
-import com.jorgegomezdeveloper.waycommerce.util.location.LocationUtil
 import kotlinx.android.synthetic.main.fragment_list_commerces.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,10 +29,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>() {
 
-    companion object {
-        const val TAG_FRAGMENT = "WCListCommercesFragment"
-    }
-
 // =================================================================================================
 // Attributes and Injections
 // =================================================================================================
@@ -41,7 +36,6 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
     private val wcListCommercesViewModel: WCListCommercesViewModel by viewModel()
     private val getCommerces: GetCommerces by inject()
     private val gpsUtil: GpsUtil by inject()
-    private val locationUtil: LocationUtil by inject()
 
     private var isFromSpinner: Boolean = false
 
@@ -51,7 +45,7 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
 
     override fun initialize() {
         //Initialize Gps.
-        wcListCommercesViewModel.getLocation(gpsUtil, locationUtil, this)
+        wcListCommercesViewModel.getLocation(gpsUtil, this)
     }
 
     @Nullable
@@ -111,7 +105,6 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
                 LoadingUtil.showLoading(activity!!)
                 wcListCommercesViewModel.getLocation(
                     gpsUtil,
-                    locationUtil,
                     this)
                 //Update adapter of list commerces.
                 initializeAdapterListCommerces(

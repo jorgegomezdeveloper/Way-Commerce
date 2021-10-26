@@ -10,7 +10,7 @@ import com.jorgegomezdeveloper.waycommerce.model.Commerce
  *   @since 21/10/2021
  *   @email jorgegomezdeveloper@gmail.com
  *
- *   Case use for connect data and view model of list commerces.
+ *   Use case class for connect remote data and view model of the list commerces.
  */
 class GetCommerces(private val wcRepositoryImpl: WCRepositoryImpl) {
 

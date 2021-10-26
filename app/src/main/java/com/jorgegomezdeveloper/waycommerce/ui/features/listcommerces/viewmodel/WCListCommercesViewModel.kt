@@ -123,7 +123,6 @@ open class WCListCommercesViewModel: WCBaseViewModel() {
 
     fun getLocation(
         gpsUtil: GpsUtil,
-        locationUtil: LocationUtil,
         fragment: WCBaseFragment) {
 
         execute(
@@ -133,7 +132,7 @@ open class WCListCommercesViewModel: WCBaseViewModel() {
 
             if (location != null) {
                 gpsUtil.stopUsingGPS()
-                buildDistanceCommerceWithUser(location, locationUtil)
+                buildDistanceCommerceWithUser(location)
             }
         })
     }
@@ -146,8 +145,7 @@ open class WCListCommercesViewModel: WCBaseViewModel() {
 // =================================================================================================
 
     private fun buildDistanceCommerceWithUser(
-        locationUser: Location,
-        locationUtil: LocationUtil) {
+        locationUser: Location) {
 
         val commerces: List<Commerce> = commercesCurrent as List<Commerce>
 
@@ -158,7 +156,7 @@ open class WCListCommercesViewModel: WCBaseViewModel() {
             for (commerce: Commerce in commerces) {
 
                 commerce.distance =
-                locationUtil.getDistanceBetweenUserAndOther(
+                LocationUtil.getDistanceBetweenUserAndOther(
                     locationUser,
                     commerce.latitude!!,
                     commerce.longitude!!)

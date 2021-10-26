@@ -11,5 +11,6 @@ class Constants {
 
     companion object {
         const val HOST_PROD = "http://prod.klikin.com"
+        const val THOUSAND = 1000
     }
 }
