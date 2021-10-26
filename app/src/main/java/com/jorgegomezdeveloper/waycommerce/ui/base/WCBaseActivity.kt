@@ -25,14 +25,6 @@ abstract class WCBaseActivity: AppCompatActivity() {
         loadInitialFragment()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
-
 // =================================================================================================
 // Public methods
 // =================================================================================================
@@ -55,12 +47,6 @@ abstract class WCBaseActivity: AppCompatActivity() {
 // To be override...
 // =================================================================================================
 
-    protected open fun initializeViews() {}
-
-    protected open fun initializeListeners() {}
-
-    protected open fun loadData() {}
-
     protected abstract fun getActivityLayout(): Int
 
     protected abstract fun getActivityTag(): String?
@@ -72,14 +58,4 @@ abstract class WCBaseActivity: AppCompatActivity() {
     protected abstract fun getInitialFragment(): WCBaseFragment?
 
     protected abstract fun initialize()
-
-// =================================================================================================
-// Private methods
-// =================================================================================================
-
-    private fun finishActivity(finishActivity: Boolean) {
-        if (finishActivity) {
-            this.finish()
-        }
-    }
 }

@@ -1,6 +1,5 @@
 package com.jorgegomezdeveloper.waycommerce.ui.activities
 
-import android.os.Bundle
 import com.jorgegomezdeveloper.waycommerce.R
 import com.jorgegomezdeveloper.waycommerce.ui.base.WCBaseActivity
 import com.jorgegomezdeveloper.waycommerce.ui.base.WCBaseFragment
@@ -32,9 +31,5 @@ class WCMainActivity: WCBaseActivity() {
     }
 
     override fun initialize() {
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 }

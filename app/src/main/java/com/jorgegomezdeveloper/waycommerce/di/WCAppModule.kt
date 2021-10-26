@@ -31,7 +31,6 @@ import retrofit2.Retrofit
 
 val wcUtilsModule = module {
     single { GpsUtil() }
-    single { LocationUtil() }
 }
 
 // =================================================================================================
@@ -71,7 +70,6 @@ val wcRestDataSourcesModule = module {
 // =================================================================================================
 
 val wcUseCasesImplModule = module {
-
     single { GetCommerces(get()) }
     single { WCRepositoryImpl() }
 }
