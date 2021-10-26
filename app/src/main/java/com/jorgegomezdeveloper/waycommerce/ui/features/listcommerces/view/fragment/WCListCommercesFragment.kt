@@ -60,6 +60,7 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
         initializeListeners()
         loadData()
         observeDataCommerces()
+        observeDataCommercesOrdered()
     }
 
 // =================================================================================================
@@ -96,6 +97,20 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
         }
     }
 
+    /**
+     * Get the list of commerces filtered with the category selected.
+     * And updated the adapter.
+     */
+    private fun getFilteredListCommercesByCategorySelected(
+        categorySelected: String) {
+
+        //Get list of commerced filtered by category selected.
+        val listCommercesByCategory: List<Commerce>? =
+            wcListCommercesViewModel.getListCommercesByCategory(categorySelected)
+        //Update adapter of list commerces
+        initializeAdapterListCommerces(listCommercesByCategory)
+    }
+
     private fun initializeListenerSwitch() {
 
         orderLocationSw.setOnCheckedChangeListener { _, isChecked ->
@@ -106,10 +121,6 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
                 wcListCommercesViewModel.getLocation(
                     gpsUtil,
                     this)
-                //Update adapter of list commerces.
-                initializeAdapterListCommerces(
-                    wcListCommercesViewModel.getCommercesCurrentOrdered())
-
             } else {
                 //Update adapter of list commerces.
                     if (!isFromSpinner) {
@@ -132,6 +143,9 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
 // Private methods
 // =================================================================================================
 
+    /**
+     * Reaction for get the data of the collection of commerces.
+     */
     private fun observeDataCommerces() {
 
         wcListCommercesViewModel.getCommercesMutableLiveData().observe(
@@ -149,19 +163,28 @@ class WCListCommercesFragment: WCBaseViewModelFragment<WCListCommercesViewModel>
     }
 
     /**
-     * Get the list of commerces filtered with the category selected.
-     * And updated the adapter.
+     * Reaction for get the data of the collection of commerces ordered.
      */
-    private fun getFilteredListCommercesByCategorySelected(
-        categorySelected: String) {
+    private fun observeDataCommercesOrdered() {
 
-        //Get list of commerced filtered by category selected.
-        val listCommercesByCategory: List<Commerce>? =
-            wcListCommercesViewModel.getListCommercesByCategory(categorySelected)
-        //Update adapter of list commerces
-        initializeAdapterListCommerces(listCommercesByCategory)
+        wcListCommercesViewModel.getCommercesOrderedMutableLiveData().observe(
+            viewLifecycleOwner, {
+
+                if (wcListCommercesViewModel
+                        .getCommercesOrderedMutableLiveData().value != null) {
+
+                    val commercesOrdered: List<Commerce> =
+                        wcListCommercesViewModel
+                            .getCommercesOrderedMutableLiveData().value as List<Commerce>
+
+                    initializeAdapterListCommerces(commercesOrdered)
+                }
+            })
     }
 
+    /**
+     * Apply adapter for the list view of the commerces.
+     */
     private fun initializeAdapterListCommerces(commerces: List<Commerce>?) {
 
         if (commerces!!.isNotEmpty()) {

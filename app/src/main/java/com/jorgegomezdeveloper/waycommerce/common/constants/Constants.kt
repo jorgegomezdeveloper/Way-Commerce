@@ -5,12 +5,12 @@ package com.jorgegomezdeveloper.waycommerce.common.constants
  *   @since 21/10/2021
  *   @email jorgegomezdeveloper@gmail.com
  *
- *   General constant of the app.
+ *   General constants of the app.
  */
 class Constants {
 
     companion object {
         const val HOST_PROD = "http://prod.klikin.com"
-        const val THOUSAND = 1000
+        const val ONE_KILOMETRE_IN_METERS = 1000
     }
 }

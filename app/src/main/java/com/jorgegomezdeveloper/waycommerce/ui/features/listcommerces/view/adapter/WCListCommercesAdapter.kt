@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.jorgegomezdeveloper.waycommerce.R
-import com.jorgegomezdeveloper.waycommerce.common.constants.Constants.Companion.THOUSAND
+import com.jorgegomezdeveloper.waycommerce.common.constants.Constants.Companion.ONE_KILOMETRE_IN_METERS
 import com.jorgegomezdeveloper.waycommerce.common.constants.texts.WCTextConstants
 import com.jorgegomezdeveloper.waycommerce.model.Commerce
 
@@ -31,19 +31,19 @@ class WCListCommercesAdapter(private val commerces: List<Commerce>?):
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val commerces = commerces?.get(position)
-        holder.nameCommerceTv.text = commerces!!.name
-        holder.categoryCommerceTv.text = commerces.category
-        holder.shortDescriptionCommerceTv.text = commerces.shortDescription
+        val commerce = commerces?.get(position)
+        holder.nameCommerceTv.text = commerce?.name
+        holder.categoryCommerceTv.text = commerce?.category
+        holder.shortDescriptionCommerceTv.text = commerce?.shortDescription
 
-        if (commerces.distance != null) {
+        if (commerce?.distance != null) {
 
-            if (commerces.distance!! >= THOUSAND) {
+            if (commerce.areKms!!) {
                 holder.distanceTv.text =
-                    commerces.distance.toString().plus(WCTextConstants.KILOMETRES)
+                    commerce.distance.toString().plus(WCTextConstants.KILOMETRES)
             } else {
                 holder.distanceTv.text =
-                    commerces.distance.toString().plus(WCTextConstants.METERS)
+                    commerce.distance.toString().plus(WCTextConstants.METERS)
             }
         }
     }

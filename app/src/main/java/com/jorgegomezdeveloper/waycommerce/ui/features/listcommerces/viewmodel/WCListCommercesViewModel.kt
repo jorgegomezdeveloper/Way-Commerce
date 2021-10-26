@@ -39,9 +39,10 @@ open class WCListCommercesViewModel: WCBaseViewModel() {
 // =================================================================================================
 
     //Commerces.
-    private var getCommercesMutableLiveData: MutableLiveData<List<Commerce>> = MutableLiveData()
-    //Location.
-    private var getLocationMutableLiveData: MutableLiveData<Location> = MutableLiveData()
+    private var getCommercesMutableLiveData:
+            MutableLiveData<List<Commerce>> = MutableLiveData()
+    private var getCommercesOrderedMutableLiveData:
+            MutableLiveData<List<Commerce>> = MutableLiveData()
 
     //Collections
     private var commercesCurrent: List<Commerce>? = ArrayList()
@@ -51,6 +52,9 @@ open class WCListCommercesViewModel: WCBaseViewModel() {
 // Use case: Get commerces
 // =================================================================================================
 
+    /**
+     * Execute get commerces from remote services.
+     */
     fun getCommerces(
         getCommerce: GetCommerces,
         fragment: WCBaseFragment) {
@@ -121,6 +125,9 @@ open class WCListCommercesViewModel: WCBaseViewModel() {
 // Get location
 // =================================================================================================
 
+    /**
+     * Execute get location from Gps.
+     */
     fun getLocation(
         gpsUtil: GpsUtil,
         fragment: WCBaseFragment) {
@@ -130,9 +137,12 @@ open class WCListCommercesViewModel: WCBaseViewModel() {
             fragment.context)!!
             .observe(fragment, { location ->
 
-            if (location != null) {
+            if (location != null &&
+                getCommercesMutableLiveData.value != null) {
+                //There is location then stop Gps
                 gpsUtil.stopUsingGPS()
-                buildDistanceCommerceWithUser(location)
+                //Calculate distances and oder collection by distance.
+                buildDistanceCommerceWithUser(location, fragment)
             }
         })
     }
@@ -141,11 +151,16 @@ open class WCListCommercesViewModel: WCBaseViewModel() {
                         context: Context?): LiveData<Location>? = gpsUtil.startGpsService(context!!)
 
 // =================================================================================================
-// Order collections
+// Distances
 // =================================================================================================
 
+    /**
+     * Allow calculate the distance
+     * and add distance in the collection for order.
+     */
     private fun buildDistanceCommerceWithUser(
-        locationUser: Location) {
+        locationUser: Location,
+        fragment: WCBaseFragment) {
 
         val commerces: List<Commerce> = commercesCurrent as List<Commerce>
 
@@ -154,38 +169,61 @@ open class WCListCommercesViewModel: WCBaseViewModel() {
             (commercesCurrentOrdered as ArrayList).clear()
 
             for (commerce: Commerce in commerces) {
-
-                commerce.distance =
+                //Calculate the distance.
+                val distanceInitial =
                 LocationUtil.getDistanceBetweenUserAndOther(
                     locationUser,
                     commerce.latitude!!,
                     commerce.longitude!!)
+                //Check if the distance are kilometres or meters.
+                commerce.areKms = LocationUtil.areKilometres(distanceInitial)
+                //Add final distance converted to integer.
+                commerce.distance = LocationUtil.convertDistance(distanceInitial)
 
                 (commercesCurrentOrdered as ArrayList).add(commerce)
             }
         }
 
         //Order commerces with distance.
-        commercesCurrentOrdered = getListCommercesOrderByDistance(commercesCurrentOrdered!!)
+        getCommercesOrdered(commercesCurrentOrdered!!, fragment)
+    }
+
+// =================================================================================================
+// Get commerces ordered
+// =================================================================================================
+
+    /**
+     * Get the list of commerces ordered by distance.
+     */
+    private fun getCommercesOrdered(
+        commerces: List<Commerce>,
+        fragment: WCBaseFragment) {
+
+        execute(
+            commerces)
+            .observe(fragment, {})
+    }
+
+    private fun execute(
+        commerces: List<Commerce>): LiveData<List<Commerce>> =
+        orderListCommercesByDistance(commerces)
+
+    fun getCommercesOrderedMutableLiveData(): MutableLiveData<List<Commerce>> {
+        return getCommercesOrderedMutableLiveData
     }
 
     /**
-     * Get the list of commerces filtered by category.
+     * Allow order the list of commerces by distance.
      */
-    private fun getListCommercesOrderByDistance(commerces: List<Commerce>): List<Commerce> {
-        return orderListCommercesByDistance(commerces)
-    }
-
-    /**
-     * Filter the list of commerces by category from main collection.
-     */
-    private fun orderListCommercesByDistance(commerces: List<Commerce>): List<Commerce> {
+    private fun orderListCommercesByDistance(commerces: List<Commerce>): LiveData<List<Commerce>> {
 
         sort(commerces
         ) { commerce1, commerce2 -> commerce1.distance!!.compareTo(commerce2.distance!!) }
 
-        //Get list ordered.
-        return commerces
+        getCommercesOrderedMutableLiveData.value = commerces
+
+        //Get list of commerces ordered.
+        return getCommercesOrderedMutableLiveData
     }
 
 // =================================================================================================
@@ -194,9 +232,5 @@ open class WCListCommercesViewModel: WCBaseViewModel() {
 
     fun getCommercesCurrent(): List<Commerce>? {
         return commercesCurrent
-    }
-
-    fun getCommercesCurrentOrdered(): List<Commerce>? {
-        return commercesCurrentOrdered
     }
 }

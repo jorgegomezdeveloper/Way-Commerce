@@ -22,5 +22,6 @@ data class Commerce(
     val latitude: Double?,
     @SerializedName("longitude")
     val longitude: Double?,
-    var distance: Int?
+    var distance: Int?,
+    var areKms: Boolean?
 )
